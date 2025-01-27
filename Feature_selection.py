@@ -139,39 +139,20 @@ def embedded_lgbm_selector(X, y, num_feats):
     embedded_lgbm_feature = X.loc[:, embedded_lgbm_support].columns.tolist()
     return embedded_lgbm_support, embedded_lgbm_feature
 
-# Data preprocessing
-def preprocess_dataset(dataset):
-    """
-    Preprocess the dataset: handle missing values and encode categorical variables.
-
-    Parameters:
-    - dataset: DataFrame, the input dataset.
-
-    Returns:
-    - X: DataFrame, feature matrix.
-    - y: Series, target variable.
-    """
-    dataset = dataset.dropna(axis=1)  # Drop columns with missing values
-    y = dataset.iloc[:, -1]  # Assume the last column is the target variable
-    X = dataset.iloc[:, :-1]  # Feature matrix
-    categorical_cols = X.select_dtypes(include=['object', 'category']).columns
-    X = pd.get_dummies(X, columns=categorical_cols, drop_first=True)  # One-hot encoding
-    return X, y
-
 # Auto feature selection
-def autoFeatureSelector(dataset_path, num_output_features, methods=[]):
+def autoFeatureSelector(X, y, num_output_features, methods=[]):
     """
     Perform automatic feature selection using multiple methods.
 
     Parameters:
-    - dataset_path: DataFrame, input dataset.
+    - X: DataFrame, feature matrix.
+    - y: Series, target variable.
     - num_output_features: int, number of top features to select.
     - methods: list, feature selection methods to apply (e.g., ['pearson', 'chi-square', ...]).
 
     Returns:
     - best_features: list, selected feature names.
     """
-    X, y = preprocess_dataset(dataset_path)  # Preprocess dataset
     feature_name = list(X.columns)
     support_dict = {}
     feature_dict = {}
