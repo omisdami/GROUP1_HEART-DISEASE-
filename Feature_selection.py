@@ -159,14 +159,14 @@ def preprocess_dataset(dataset):
     return X, y
 
 # Auto feature selection
-def autoFeatureSelector(dataset_path, methods=[], num_output_features=10):
+def autoFeatureSelector(dataset_path, num_output_features, methods=[]):
     """
     Perform automatic feature selection using multiple methods.
 
     Parameters:
     - dataset_path: DataFrame, input dataset.
-    - methods: list, feature selection methods to apply (e.g., ['pearson', 'chi-square', ...]).
     - num_output_features: int, number of top features to select.
+    - methods: list, feature selection methods to apply (e.g., ['pearson', 'chi-square', ...]).
 
     Returns:
     - best_features: list, selected feature names.
