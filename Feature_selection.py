@@ -203,7 +203,18 @@ def autoFeatureSelector(dataset_path, num_output_features, methods=[]):
     feature_selection_df['Total'] = feature_selection_df.iloc[:, 1:].sum(axis=1)  # Count votes
     feature_selection_df = feature_selection_df.sort_values(['Total', 'Feature'], ascending=False)
 
-    # Select features with maximum votes
-    best_features = feature_selection_df.iloc[:num_output_features]['Feature'].tolist()
+    # First select features voted by all methods
+    num_methods = len(methods)
+    unanimous_features = feature_selection_df[feature_selection_df['Total'] == num_methods]['Feature'].tolist()
+    
+    # If we need more features, add them based on vote count
+    if len(unanimous_features) < num_output_features:
+        remaining_features = feature_selection_df[
+            ~feature_selection_df['Feature'].isin(unanimous_features)
+        ].iloc[:(num_output_features - len(unanimous_features))]['Feature'].tolist()
+        best_features = unanimous_features + remaining_features
+    else:
+        best_features = unanimous_features[:num_output_features]
+    
     print(feature_selection_df)  # Print summary table
     return best_features
