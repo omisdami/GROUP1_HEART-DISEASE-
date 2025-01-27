@@ -204,6 +204,6 @@ def autoFeatureSelector(dataset_path, num_output_features, methods=[]):
     feature_selection_df = feature_selection_df.sort_values(['Total', 'Feature'], ascending=False)
 
     # Select features with maximum votes
-    best_features = feature_selection_df.head(num_output_features)['Feature'].tolist()
+    best_features = feature_selection_df.iloc[:num_output_features]['Feature'].tolist()
     print(feature_selection_df)  # Print summary table
     return best_features
